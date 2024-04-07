@@ -9,11 +9,9 @@ class PasteException(HTTPException):
         super().__init__(status_code=self.status_code, 
                          detail=self.detail)
 
-
-
 class PasteOwnExc(PasteException):
     status_code=status.HTTP_403_FORBIDDEN
-    detail="You do not have parmission to access this resource"
+    detail="You do not have permission to access this resource"
 
 class PasteWasNotCreated(PasteException):
     detail="Failed to create paste"

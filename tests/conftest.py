@@ -7,14 +7,8 @@ import pytest
 from config import settings
 from app.models.base_model import Base
 from main import app
-from boto3.session import Session
 from config import settings
-from botocore.exceptions import ClientError
-from logger import logger
-from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession, create_async_engine, AsyncEngine
-from worker.worker import celery as celery_app
-from celery.beat import PersistentScheduler
-from celery.worker import WorkController
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, AsyncEngine
 
 
 @pytest.fixture(scope="session")
@@ -54,16 +48,6 @@ async def redis_session():
     FastAPICache.init(RedisBackend(session), prefix='fastapi-cache')
     yield session
     await session.close()
-
-# @pytest.fixture(scope="session")
-# async def celery_fixture():
-#     worker = WorkController(celery_app)
-#     beat = PersistentScheduler(celery_app, schedule_filename="celerybeat-schedule")
-#     worker.start()
-#     beat.schedule()
-#     yield 
-#     worker.stop()
-#     beat.close()
 
 
 @pytest.fixture(scope="function")

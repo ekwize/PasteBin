@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import AsyncSession
 from config import settings
-from sqlalchemy.orm import declarative_base
 
 
 if settings.MODE == "TEST":

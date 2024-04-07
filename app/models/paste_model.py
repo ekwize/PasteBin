@@ -2,7 +2,8 @@ from app.models.base_model import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID
 from datetime import datetime, timedelta
-from sqlalchemy import TIMESTAMP, ForeignKey
+from sqlalchemy import ForeignKey
+
 
 class Paste(Base):
     __tablename__ = "pastes"

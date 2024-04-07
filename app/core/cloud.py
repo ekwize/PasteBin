@@ -1,6 +1,7 @@
 from boto3.session import Session
-from config import settings
 from botocore.exceptions import ClientError
+from config import settings
+
 
 session = Session(
     aws_secret_access_key=settings.AWS_SECRET_ACCES_KEY,

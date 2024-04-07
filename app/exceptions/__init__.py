@@ -6,7 +6,7 @@ __all__ = [
     "UserIsNotAuth",
     "UserIsNotPresent",
     "UserWasNotFound",
-    "IncorrectEmailOrPassword",
+    "IncorrectUsernameOrPassword",
     "IncorrectPassword",
     "IncorrectTokenFormatException",
     "InvalidUser",
@@ -14,5 +14,6 @@ __all__ = [
     "TokenExpired",
     "PasteOwnExc",
     "PasteWaNotCreated",
-    "PasteWasNotFound"
+    "PasteWasNotFound",
+    "IncorrectUsername"
 ]

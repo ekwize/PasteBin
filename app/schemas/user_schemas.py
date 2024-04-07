@@ -1,28 +1,20 @@
-import base64
-import secrets
+import re
 from app.schemas.base_schema import Base
 from pydantic import EmailStr, field_validator
 from datetime import datetime
 from typing import Optional
-import re
-from app.exceptions import IncorrectPassword
-
-
-def create_username():
-    id = secrets.token_bytes(6)
-    hash = base64.urlsafe_b64encode(id)
-    unique_id = hash.decode()
-    return 'User_' + unique_id
+from app.exceptions import IncorrectPassword, IncorrectUsername
 
 
 class UserCreateModel(Base):
     """Model to create user"""
 
-    username: Optional[str]
+    username: str
     email: EmailStr
     password: str
 
     @field_validator('password')
+    @classmethod
     def validate_password(cls, v: str) -> str:
         password_regex = r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[!@#$%^&*(),.?":{}|<>\w-]{8,25}$'
 
@@ -31,15 +23,17 @@ class UserCreateModel(Base):
         return v
     
     @field_validator('username')
+    @classmethod
     def validate_username(cls, v: str) -> str:
-        if not v:
-            v = create_username()
+        if len(v) < 3:
+            raise IncorrectUsername
         return v
+    
 
 class UserLoginModel(Base):
     """Model for user authorization"""
 
-    email: EmailStr
+    username: str 
     password: str
 
 class UserViewModel(Base):
@@ -48,3 +42,7 @@ class UserViewModel(Base):
     username: Optional[str]
     email: EmailStr
     created_at: datetime
+
+class UserUpdateModel(Base):
+    """Model for update user data"""
+    ...

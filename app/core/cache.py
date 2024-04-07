@@ -1,6 +1,7 @@
-from config import settings
 import aioredis
 from aioredis import Redis
+from config import settings
+
 
 if settings.MODE == "TEST":
     REDIS_URL = settings.build_test_redis_dsn()

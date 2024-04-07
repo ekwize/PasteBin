@@ -1,10 +1,10 @@
-from datetime import datetime, timezone
-from sqlalchemy import TIMESTAMP, func
+from datetime import datetime
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 from datetime import datetime
 
+
 class Base(DeclarativeBase):
-    __abstarct__ = True
+    __abstract__ = True
 
     id: Mapped[int] = mapped_column(primary_key=True)
     created_at: Mapped[datetime] = mapped_column(

@@ -18,10 +18,6 @@ class AbstractRepository(ABC):
     @abstractmethod
     async def get_single(self, **kwargs):
         raise NotImplementedError
-
-    @abstractmethod
-    async def get_multi(self, **kwargs):
-        raise NotImplementedError
     
     @abstractmethod
     async def get_all(self, **kwargs):

@@ -7,9 +7,9 @@ from app.exceptions import (
     TokenExpired, 
     UserIsNotPresent
 )
-from app.services.sqlalchemy_repository import SqlAlchemyRepository
-from app.core.database import get_session
-from sqlalchemy.ext.asyncio import AsyncSession
+from app.services.user_service import UserService
+from app.api.dependencies import user_service
+from typing import Annotated
 
 
 def get_token(request: Request):
@@ -17,19 +17,19 @@ def get_token(request: Request):
     return token
 
 async def get_current_user(
-        token: str = Depends(get_token), 
-        session: AsyncSession = Depends(get_session)
+        token: Annotated[str, Depends(get_token)],
+        user_service: Annotated[UserService, Depends(user_service)]
 ) -> User:
     try:
         payload = jwt.decode(
             token, settings.SECRET, settings.ALGORITHM
         )
         user_id: str = payload.get("sub")
+        
         if not user_id:
             raise UserIsNotPresent
-        
-        user_repo = SqlAlchemyRepository(model=User, db_session=session)
-        return await user_repo.get_single(id=user_id)
+
+        return await user_service.get_single(id=user_id)
         
     except ExpiredSignatureError:
         raise TokenExpired

@@ -5,7 +5,6 @@ from uuid import UUID, uuid4
 from enum import Enum
 
 
-
 class PortalRole(str, Enum):
     ROLE_PORTAL_GUEST = "ROLE_PORTAL_GUEST"
     ROLE_PORTAL_USER = "ROLE_PORTAL_USER"
