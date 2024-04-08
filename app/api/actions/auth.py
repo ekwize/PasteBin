@@ -1,23 +1,24 @@
-from fastapi import Depends, Request
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 from jose import ExpiredSignatureError, JWTError, jwt
 from config import settings
 from app.models.user_model import User
 from app.exceptions import (
     IncorrectTokenFormatException, 
     TokenExpired, 
-    UserIsNotPresent
+    UserIsNotPresent,
+    IncorrectUsernameOrPassword
 )
 from app.services.user_service import UserService
 from app.api.dependencies import user_service
 from typing import Annotated
+from app.utils.auth import verify_password
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
-def get_token(request: Request):
-    token = request.cookies.get("access_token")
-    return token
 
 async def get_current_user(
-        token: Annotated[str, Depends(get_token)],
+        token: Annotated[str, Depends(oauth2_scheme)],
         user_service: Annotated[UserService, Depends(user_service)]
 ) -> User:
     try:
@@ -39,3 +40,12 @@ async def get_current_user(
     
     except Exception as e:
         return None
+    
+
+async def authenticate_client(username: str, password: str):
+    client = await user_service().get_single(username=username)
+
+    if not (client and verify_password(password, client.password)):
+        raise IncorrectUsernameOrPassword
+
+    return client

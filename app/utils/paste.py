@@ -3,7 +3,9 @@ import secrets
 from passlib.context import CryptContext
 from app.models.paste_model import Paste
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def create_paste_id() -> str:
     id = secrets.token_bytes(6)

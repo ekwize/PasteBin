@@ -24,6 +24,10 @@ class IncorrectTokenFormatException(AuthException):
     status_code=status.HTTP_401_UNAUTHORIZED
     detail="Incorrect token format"
 
+class TokenWasNotFound(AuthException):
+    status_code=status.HTTP_401_UNAUTHORIZED
+    detail="Missing access token"
+    
 ## User Exceptions ##
 
 class UserIsNotPresent(AuthException):
@@ -39,14 +43,8 @@ class InvalidUser(AuthException):
     detail="Invalid user"
 
 class UserAlreadyExists(AuthException):
-    def __init__(self, reason: Literal["email", "username"]):
-        super().__init__()
-        if reason == "email":
-            self.detail = "This email already in use"
-        elif reason == "username":
-            self.detail = "This username already in use"
-
     status_code=status.HTTP_409_CONFLICT 
+    detail = "User already exists"
 
 class UserWasNotFound(AuthException):
     status_code=status.HTTP_404_NOT_FOUND
@@ -67,3 +65,4 @@ class IncorrectUsernameOrPassword(AuthException):
 class IncorrectUsername(AuthException):
     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
     detail="Incorrect username"
+

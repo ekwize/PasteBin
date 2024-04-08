@@ -4,7 +4,7 @@ from sqlalchemy import delete, select, update
 from app.core.database import async_session
 
 from app.models.base_model import Base as BaseModel
-from app.schemas.base_schema import Base as BaseSchema
+from app.schemas.base_scheme import Base as BaseSchema
 from .base_repository import AbstractRepository
 from app.utils.auth import get_password_hash
 

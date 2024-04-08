@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta
-
 from jose import ExpiredSignatureError, JWTError, jwt
-
 from config import settings
 from app.exceptions.auth_exc import (
     IncorrectTokenFormatException, 
@@ -52,16 +50,3 @@ class TokenHelper:
         except JWTError:
             raise IncorrectTokenFormatException
         
-    @staticmethod
-    def check_token_expired(token: str) -> bool:
-        try:
-            payload = jwt.decode(
-                token, 
-                settings.SECRET, 
-                settings.ALGORITHM
-            )
-        except ExpiredSignatureError:
-            return True
-        
-        except Exception:
-            return False

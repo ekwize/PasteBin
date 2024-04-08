@@ -1,5 +1,5 @@
 import re
-from app.schemas.base_schema import Base
+from .base_scheme import Base
 from pydantic import EmailStr, field_validator
 from datetime import datetime
 from typing import Optional

@@ -1,6 +1,6 @@
-from typing import Annotated, Optional
+from typing import Annotated
 from fastapi import APIRouter, Depends
-from app.schemas.paste_schemas import (
+from app.schemas.paste_scheme import (
     PasteCreateModel, 
     PasteForUserModel,
     PasteViewModel,
@@ -15,7 +15,7 @@ from app.exceptions import (
 from app.services.user_service import UserService
 from app.utils.paste import verify_paste_password, create_paste_id
 from app.models.user_model import User, PortalRole
-from app.utils.dependencies import get_current_user
+from app.api.actions.auth import get_current_user
 from datetime import datetime, timedelta
 from app.exceptions import UserIsNotAuth
 from app.exceptions import IncorrectPastePassword
@@ -54,7 +54,7 @@ async def create_paste(
             user_id=current_user.id,
             role=PortalRole.ROLE_PORTAL_USER,
             username=current_user.username,
-            **paste_data.__dict__,
+            **paste_data.model_dump(),
             expires_at=expires_at
         )
     else:
@@ -81,7 +81,7 @@ async def view_paste(
 ) -> PasteViewModel:
     
     paste = await paste_service.get_single(paste_auth_data.id)
-    view_paste = PasteViewModel(**paste.__dict__)
+    view_paste = PasteViewModel(**paste.model_dump())
 
     if current_user and paste.user_id == current_user.id:
         return view_paste

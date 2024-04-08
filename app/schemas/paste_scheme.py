@@ -1,6 +1,6 @@
 import calendar
 from typing import Literal, Optional
-from app.schemas.base_schema import Base
+from app.schemas.base_scheme import Base
 from uuid import UUID
 from datetime import datetime, timedelta
 from app.models.user_model import PortalRole

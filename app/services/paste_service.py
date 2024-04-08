@@ -7,7 +7,7 @@ from app.exceptions import (
 from app.repositories.sqlalchemy_repository import SqlAlchemyRepository
 from app.repositories.cloud_repository import CloudRepository
 from app.models.paste_model import Paste
-from app.schemas.paste_schemas import PasteCreateModel, PasteUpdateModel, PasteViewModel, PasteModel
+from app.schemas.paste_scheme import PasteCreateModel, PasteUpdateModel, PasteViewModel, PasteModel
 from logger import logger
 from app.core.cloud import bucket
 
