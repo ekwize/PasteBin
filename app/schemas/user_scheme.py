@@ -42,7 +42,3 @@ class UserViewModel(Base):
     username: Optional[str]
     email: EmailStr
     created_at: datetime
-
-class UserUpdateModel(Base):
-    """Model for update user data"""
-    ...

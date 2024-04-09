@@ -5,6 +5,7 @@ from app.utils.token_helper import TokenHelper
 
 class TestUser:
 
+    @classmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "username, email, password, status_code", 
@@ -36,6 +37,7 @@ class TestUser:
         )
         assert response.status_code == status_code
 
+    @classmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "username, password, status_code", 

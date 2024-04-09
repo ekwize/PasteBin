@@ -44,7 +44,22 @@ class PasteForUserModel(Base):
         ]
     ] 
 
-    @field_validator('expiration')
+    @field_validator("title", "category", "password")
+    @classmethod
+    def validate(cls, v):
+        if v != None and len(v.strip()) == 0:
+            raise ValueError("Field cannot be empty")
+        return v
+
+    @field_validator("text")
+    @classmethod
+    def validate_text(cls, v: str):
+        if len(v.strip()) == 0:
+            raise ValueError("Text cannot be empty")
+        return v
+
+
+    @field_validator("expiration")
     @classmethod
     def validate_expiration(cls, v: str) -> timedelta:
         try:
