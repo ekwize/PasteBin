@@ -4,7 +4,7 @@ from httpx import AsyncClient
 from tests.test_user import TestUser
 
 
-class TestPasteGuest:
+class TestPaste:
 
     ### Create paste (two functions: for guest and authorized user) ###
     @pytest.mark.asyncio
@@ -94,8 +94,8 @@ class TestPasteGuest:
         "username, email, user_password, entered_password, text, title, category, paste_password, exposure, expiration, view_guest_status, view_auth_user_status",
         [
             ("test5", "test5@gmail.com", "PassWord123", "password1", "text1", "title1", "category1", "password1", "Public", "Never", 200, 200),
-            ("test6", "test6@gmail.com", "PassWord123", "password2", "text2", "title2", "category2", "password2", "Private", "Burn after read", 200, 200),
-            ("test7", "test7@gmail.com", "PassWord123", "abc", "text2", "title2", "category2", "password2", "Public", "Burn after read", 403, 200),
+            ("test6", "test6@gmail.com", "PassWord123", "password2", "text2", "title2", "category2", "password2", "Private", "Burn after read", 200, 403),
+            ("test7", "test7@gmail.com", "PassWord123", "abc", "text2", "title2", "category2", "password2", "Public", "Burn after read", 403, 403),
         ]
     )
     async def test_guest_view_paste(
@@ -139,24 +139,23 @@ class TestPasteGuest:
             async_client
         )
 
-        guest_response = await async_client.post(
+        view_guest_paste_response = await async_client.post(
             "/paste/view",
             json={
                 "id": guest_paste["id"],
                 "password": entered_password,
             }
         )
-        auth_user_response = await async_client.post(
+        view_auth_user_paste_response = await async_client.post(
             "/paste/view",
             json={
                 "id": auth_user_paste[0]["id"],
                 "password": entered_password,
-            },
-            headers={"Authorization": f"Bearer {auth_user_paste[1]}"}
+            }
         )
-        assert guest_response.status_code == view_guest_status
-        assert auth_user_response.status_code == view_auth_user_status
 
+        assert view_auth_user_paste_response.status_code == view_auth_user_status
+        assert view_guest_paste_response.status_code == view_guest_status
 
     
 
@@ -210,15 +209,7 @@ class TestPasteGuest:
             async_client
         )
 
-        guest_response = await async_client.post(
-            "/paste/view",
-            json={
-                "id": guest_paste["id"],
-                "password": entered_password,
-            }
-        )
-
-        auth_user_response = await async_client.post(
+        view_auth_user_paste_response = await async_client.post(
             "/paste/view",
             json={
                 "id": auth_user_paste[0]["id"],
@@ -226,8 +217,19 @@ class TestPasteGuest:
             },
             headers={"Authorization": f"Bearer {auth_user_paste[1]}"}
         )
-        assert guest_response.status_code == view_guest_status
-        assert auth_user_response.status_code == view_auth_user_status
+
+        view_guest_paste_response = await async_client.post(
+            "/paste/view",
+            json={
+                "id": guest_paste["id"],
+                "password": entered_password,
+            },
+            headers={"Authorization": f"Bearer {auth_user_paste[1]}"}
+        )
+        
+        assert view_guest_paste_response.status_code == view_guest_status
+        assert view_auth_user_paste_response.status_code == view_auth_user_status
+
 
 
     
