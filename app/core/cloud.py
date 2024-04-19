@@ -19,15 +19,10 @@ def bucket():
         return settings.TEST_BUCKET_NAME
     return settings.BUCKET_NAME
 
-def create_bucket_if_not_exists(bucket_name):
+def create_bucket():
     try:
-        s3.head_bucket(Bucket=bucket_name)
+        s3.head_bucket(Bucket=bucket())
     except ClientError as e:
         error_code = e.response['Error']['Code']
         if error_code == '404':
-            s3.create_bucket(Bucket=bucket_name)
-    else:
-        pass
-        #сюда нужно прикрутить лог
-
-# create_bucket_if_not_exists('pastes',
+            s3.create_bucket(Bucket=bucket())
